@@ -43,10 +43,14 @@ Text GetManialink(K_BoxEffect[] EffectList) {
     </frame>
 
     <frame id="dialog" pos="0 30" hidden="1">
-    <label id="bindKb" pos="-30 17" z-index="0" size="41 5" halign="left" valign="center" textprefix="Keyboard: "/>
-    <label id="bindPad" pos="-29 0" z-index="0" size="41 5" halign="left" valign="center" textprefix="Pad: "/>
-    <label id="setPad" pos="-12 -8" z-index="0" size="22 7" text="Set" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/><label id="setKb" pos="-12 8" z-index="0" size="22 7" text="Set" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/><label id="resetKb" pos="12 8" z-index="0" size="22 7" text="Reset" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/><label id="resetPad" pos="12 -8" z-index="0" size="22 7" text="Reset" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/><label id="save" pos="0 -22" z-index="0" size="37 7" text="Save" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
-    <quad pos="0 -4" z-index="0" size="70 52" bgcolor="000" opacity="0.7" halign="center" valign="center"/>
+        <label id="bindKb" pos="-30 17" z-index="0" size="41 5" halign="left" valign="center" textprefix="Keyboard: "/>
+        <label id="bindPad" pos="-29 0" z-index="0" size="41 5" halign="left" valign="center" textprefix="Pad: "/>
+        <label id="setPad" pos="-12 -8" z-index="0" size="22 7" text="Set" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+        <label id="setKb" pos="-12 8" z-index="0" size="22 7" text="Set" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+        <label id="resetKb" pos="12 8" z-index="0" size="22 7" text="Reset" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+        <label id="resetPad" pos="12 -8" z-index="0" size="22 7" text="Reset" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+        <label id="save" pos="0 -22" z-index="0" size="37 7" text="Save" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+        <quad pos="0 -4" z-index="0" size="70 52" bgcolor="000" opacity="0.7" halign="center" valign="center"/>
     </frame>
 
 
@@ -114,10 +118,13 @@ Text GetManialink(K_BoxEffect[] EffectList) {
                         }
                     }
                 }
+
                 if (Event.Type == CMlScriptEvent::Type::KeyPress && Event.KeyName == "Esc") {
-                    setKb=False;
-                    setPad =False;
+                    setKb = False;
+                    setPad = False;
+                    continue;
                 }
+
                 if (setKb && Event.Type == CMlScriptEvent::Type::KeyPress) {
                     setKb=False;
                     TMKart_KeyboardItemKey = Event.KeyName;
@@ -199,16 +206,18 @@ Text GetManialink(K_BoxEffect[] EffectList) {
                 }
             }
 
-            if (Net_PlayerAvilEffectMarker == "None") continue;
+
 
             foreach (Event in PendingEvents) {
                 if (Event.Type == CMlScriptEvent::Type::MouseClick) {
                     if (Event.ControlId == "Rebind") {
+                        log("rebind");
                         Rebind();
                     }
                 }
 
                 if (Event.Type == CMlScriptEvent::Type::KeyPress && Event.KeyName == TMKart_KeyboardItemKey) {
+                    if (Net_PlayerAvilEffectMarker == "None") continue;
                     SendPlayerActivatedEffect();
                 }
             }
@@ -216,6 +225,7 @@ Text GetManialink(K_BoxEffect[] EffectList) {
             foreach (PadEvent in Input.PendingEvents) {
                 if (PadEvent.Type == CInputEvent::EType::PadButtonPress) {
                     if ( TextLib::Replace(""^PadEvent.Button, "::EButton::", "") == TMKart_PadItemKey) {
+                        if (Net_PlayerAvilEffectMarker == "None") continue;
                         SendPlayerActivatedEffect();
                     }
                 }

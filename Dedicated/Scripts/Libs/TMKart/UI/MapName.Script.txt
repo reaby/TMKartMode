@@ -44,20 +44,13 @@ Text GetManialink() {
             }
 
             if (!Processed && UI.UISequence != CUIConfig::EUISequence::Intro) {
-                log("hide");
                 Processed = True;
                 AnimMgr.Flush(MapFrame);
                 AnimMgr.Add(MapFrame, "<elem position=\"-300 50\" />", 1250, CAnimManager::EAnimManagerEasing::CircOut);
                 AnimMgr.Flush(AuthorFrame);
                 AnimMgr.Add(AuthorFrame, "<elem position=\"-400 35\" />", 1250, CAnimManager::EAnimManagerEasing::CircOut);
             }
-
-
-
-
-
         }
-
     }
 
     --></script>
