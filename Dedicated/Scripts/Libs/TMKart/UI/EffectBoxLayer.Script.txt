@@ -211,7 +211,6 @@ Text GetManialink(K_BoxEffect[] EffectList) {
             foreach (Event in PendingEvents) {
                 if (Event.Type == CMlScriptEvent::Type::MouseClick) {
                     if (Event.ControlId == "Rebind") {
-                        log("rebind");
                         Rebind();
                     }
                 }
