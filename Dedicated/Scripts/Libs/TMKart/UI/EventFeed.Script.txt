@@ -75,7 +75,7 @@ Void SendMessage(Text string) {
 Text GetManialink(Integer feedSize) {
 	declare Text entries = "";
 	for (i, 0, feedSize) {
-		entries ^= """<frameinstance modelid="message"/> """ ^ "\n";
+		entries ^= """<frameinstance modelid="message"/> """;
 	}
 
 	return """<?xml version="1.0" encoding="utf-8" standalone="yes" ?>

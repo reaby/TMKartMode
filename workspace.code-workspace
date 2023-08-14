@@ -1,20 +1,44 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "Dedicated\\Scripts"
-		},
-		{
-			"path": "..\\TrackmaniaFlagRush\\DedicatedServer\\Scripts"
-		},
-		{
-			"path": "C:\\Users\\php_r\\OpenplanetNext\\Extract\\GameData\\Scripts"
-		},
-		{
-			"path": "C:\\Users\\php_r\\OpenplanetNext\\Extract\\Titles\\Trackmania\\Scripts"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "Dedicated\\Scripts"
+    },
+    {
+      "path": "../Extract/GameData/Scripts"
+    },
+    {
+      "path": "../Extract/Titles/Trackmania/Scripts"
+    }
+  ],
+  "settings": {
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "files.trimTrailingWhitespace": true,
+    "files.encoding": "utf8",
+    "files.eol": "\n"
+  },
+  "extensions": {
+    "recommendations": [
+      "aessi.vscode-mslint",
+      "reaby.maniascript-support",
+      "redhat.vscode-xml"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Program",
+        "skipFiles": ["<node_internals>/**"],
+        "program": "${workspaceFolder}/Tools/restartmode.js"
+      }
+    ]
+  }
 }

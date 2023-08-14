@@ -92,6 +92,16 @@ Void InitEffects() {
     NoneEffect.Color      = "fff";
     G_EffectsList.add(NoneEffect);
 
+		declare K_BoxEffect RespawnEffect;
+    NoneEffect.Name       = "Respawn";
+    NoneEffect.Marker     = "e_respawn";
+    NoneEffect.TargetMode = "first";
+    NoneEffect.Duration   = 0;
+    NoneEffect.ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968911908595961876/nothing.png";
+    NoneEffect.Color      = "f00";
+    G_EffectsList.add(RespawnEffect);
+
+
     // Thunder // NoEngine
     declare K_BoxEffect Thunder;
     Thunder.Name       = "No Engine";
@@ -167,8 +177,8 @@ Void InitEffects() {
     declare K_BoxEffect SlowMo;
     SlowMo.Name         = "Slow Motion";
     SlowMo.Marker       = "e_slowmo";
-    SlowMo.TargetMode   = "nearest";
-    SlowMo.Duration     = 2500;
+    SlowMo.TargetMode   = "first";
+    SlowMo.Duration     = 5000;
     SlowMo.ImageURL     = "https://cdn.discordapp.com/attachments/934577399033647104/968911442105479228/slowmo.png";
     SlowMo.Color        = "aaa";
     G_EffectsList.add(SlowMo);
@@ -187,7 +197,7 @@ Void InitEffects() {
     declare K_BoxEffect InkSplats;
     InkSplats.Name           = "Ink Splats";
     InkSplats.Marker         = "e_ink_splats";
-    InkSplats.TargetMode     = "nearest";
+    InkSplats.TargetMode     = "all";
     InkSplats.ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/968988325677522954/ink_icon.png";
     InkSplats.Color          = "000";
     InkSplats.Duration       = 5000;
@@ -246,16 +256,17 @@ Void ActivateOnPlayer(CSmPlayer Player, K_BoxEffect Effect) {
 
     switch(Effect.Marker) {
         case "e_thunder": {
-            SetPlayer_Delayed_NoEngine(Player, True);
+            //SetPlayer_Delayed_NoEngine(Player, True);
+						RespawnPlayer(Player);
         }
         case "e_cruise_all": {
             SetPlayer_Delayed_Cruise(Player, True, MathLib::Rand(20., 40.)*10.);
         }
         case "e_turbo_self": {
-            SetPlayer_Delayed_BoostUp(Player, True);
+            SetPlayer_Delayed_BoostDown(Player, True); // was boostUp
         }
         case "e_turbo2_self": {
-            SetPlayer_Delayed_Boost2Up(Player, True);
+            SetPlayer_Delayed_Boost2Down(Player, True); // was boost2Up
         }
         case "e_fragile": {
             SetPlayer_Delayed_Fragile(Player, True);
@@ -326,6 +337,9 @@ Void UnActivateOnPlayer(K_BoxEffectOnPlayer _effectOnPlayer) {
                 {
                     SetPlayer_Delayed_NoSteer(Player, False);
                 }
+								case "e_respawn": {
+									RespawnPlayer(Player);
+								}
             }
         }
     }
@@ -405,9 +419,11 @@ Void OnPlayerActivedEffect(CSmPlayer CurrentPlayer) {
 
             case "nearest": {
                 declare CSmPlayer NearestPlayer = GetNearestPlayer(CurrentPlayer);
-                ActivateOnPlayer(NearestPlayer, AvilEffect);
-                EventFeed::SendMessage("""$fff ${{{ AvilEffect.Color }}}{{{ AvilEffect.Name }}}$fff {{{CurrentPlayer.User.Name}}} ➔ {{{NearestPlayer.User.Name}}}""", AvilEffect.ImageURL);
-                SetPlayerAvilEffect(CurrentPlayer, 0);
+								if (NearestPlayer != CurrentPlayer) {
+									ActivateOnPlayer(NearestPlayer, AvilEffect);
+									EventFeed::SendMessage("""$fff ${{{ AvilEffect.Color }}}{{{ AvilEffect.Name }}}$fff {{{CurrentPlayer.User.Name}}} ➔ {{{NearestPlayer.User.Name}}}""", AvilEffect.ImageURL);
+									SetPlayerAvilEffect(CurrentPlayer, 0);
+								}
             }
 
             case "all": {

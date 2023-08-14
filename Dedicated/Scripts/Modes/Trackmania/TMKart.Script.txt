@@ -20,6 +20,8 @@
 ***
 UsePvECollisions = True;
 UsePvPCollisions = True;
+ClientManiaAppUrl = "";
+
 Effects::InitEffects();
 ***
 
@@ -50,6 +52,4 @@ EventFeed::ClearMessages();
 Effects::CleanUp();
 ***
 
-Void doNothing() {
-
-}
+Void doNothing() { }
