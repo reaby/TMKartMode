@@ -100,7 +100,7 @@ Void InitEffects() {
 		Marker     = "e_none",
 		TargetMode = "none",
 		Duration   = 0,
-		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968911908595961876/nothing.png",
+		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/nothing.png",
 		Color      = "fff"
 	};
     G_EffectsList.add(NoneEffect);
@@ -110,7 +110,7 @@ Void InitEffects() {
 		Marker     = "e_respawn",
 		TargetMode = "first",
 		Duration   = 10,
-		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968911908595961876/nothing.png",
+		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/respawn.png",
 		Color      = "b23"
 	};
     G_EffectsList.add(RespawnEffect);
@@ -120,7 +120,7 @@ Void InitEffects() {
 		Marker     = "e_immunity",
 		TargetMode = "self",
 		Duration   = 10000,
-		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968911908595961876/nothing.png",
+		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/immunity.png",
 		Color      = "fff"
 	};
     G_EffectsList.add(ImmunityEffect);
@@ -132,7 +132,7 @@ Void InitEffects() {
 		Function   = "SetPlayer_Delayed_NoEngine",
 		TargetMode = "nearest",
 		Duration   = 5000,
-		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968907448045948938/thunder.png",
+		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/engine_off.png",
 		Color      = "ff0"
 	};
 	G_EffectsList.add(NoEngine);
@@ -143,7 +143,7 @@ Void InitEffects() {
 		Marker     = "e_cruise_all",
 		TargetMode = "nearest",
 		Duration   = 3500,
-		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968908512602255370/cruisecontrol.png",
+		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/cruisecontrol.png",
 		Color      = "0d0"
 		};
 		G_EffectsList.add(ForceCruiseControlAll);
@@ -154,7 +154,7 @@ Void InitEffects() {
 		Marker     = "e_turbo_self",
 		TargetMode = "self",
 		Duration   = 2500,
-		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968909707366506496/boost1.png",
+		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/boost1.png",
 		Color      = "f90"
 	};
 	G_EffectsList.add(Turbo);
@@ -165,7 +165,7 @@ Void InitEffects() {
 		Marker     = "e_turbo2_self",
 		TargetMode = "self",
 		Duration   = 2500,
-		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968909881287516210/boost2.png",
+		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/boost2.png",
 		Color      = "e22"
 	};
 	G_EffectsList.add(SuperTurbo);
@@ -176,7 +176,7 @@ Void InitEffects() {
 		Marker     = "e_fragile",
 		TargetMode = "nearest",
 		Duration   = 10000,
-		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968910304090148905/fragile.png",
+		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/fragile.png",
 		Color      = "d70"
 	};
 	G_EffectsList.add(Fragile);
@@ -187,7 +187,7 @@ Void InitEffects() {
 		Marker     = "e_nobrake",
 		TargetMode = "nearest",
 		Duration   = 5000,
-		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968910570763984947/nobrake.png",
+		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/nobrake.png",
 		Color      = "ef0"
 	};
 	G_EffectsList.add(NoBrake);
@@ -198,7 +198,7 @@ Void InitEffects() {
 		Marker       = "e_low_gravity",
 		TargetMode   = "nearest",
 		Duration     = 5000,
-		ImageURL     = "https://cdn.discordapp.com/attachments/934577399033647104/968911201918668810/lowgravity.png",
+		ImageURL     = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/lowgravity.png",
 		Color        = "0af"
 	};
 	G_EffectsList.add(LowGravity);
@@ -209,7 +209,7 @@ Void InitEffects() {
 		Marker       = "e_slowmo",
 		TargetMode   = "first",
 		Duration     = 5000,
-		ImageURL     = "https://cdn.discordapp.com/attachments/934577399033647104/968911442105479228/slowmo.png",
+		ImageURL     = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/slowmo.png",
 		Color        = "aaa"
 	};
 	G_EffectsList.add(SlowMo);
@@ -220,7 +220,7 @@ Void InitEffects() {
 		Marker         = "e_turbo2_self",
 		TargetMode     = "nearest",
 		Duration       = 3000,
-		ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/968911657126473728/yeet.png",
+		ImageURL       = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/yeet.png",
 		Color          = "900"
 	};
 	G_EffectsList.add(Yeet);
@@ -230,7 +230,7 @@ Void InitEffects() {
 		Name           = "Ink Splats",
 		Marker         = "e_ink_splats",
 		TargetMode     = "all",
-		ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/968988325677522954/ink_icon.png",
+		ImageURL       = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_all_icon.png",
 		Color          = "000",
 		Duration       = 5000
 	};
@@ -241,7 +241,7 @@ Void InitEffects() {
 		Name           = "No Grip",
 		Marker         = "e_no_grip",
 		TargetMode     = "nearest",
-		ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/969386365156479006/nogrip.png",
+		ImageURL       = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/nogrip.png",
 		Color          = "0dd",
 		Duration       = 5000
 	};
@@ -252,7 +252,7 @@ Void InitEffects() {
 		Name           = "No Steer",
 		Marker         = "e_no_steer",
 		TargetMode     = "nearest",
-		ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/969386365466837033/nosteer.png",
+		ImageURL       = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/nosteer.png",
 		Color          = "d0d",
 		Duration       = 1000
 	};

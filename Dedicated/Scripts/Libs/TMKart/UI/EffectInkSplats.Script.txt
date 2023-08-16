@@ -1,15 +1,14 @@
-//#rRequireContext CSmMode
-//#RequireContext CSmMlScriptIngame
+//#RequireContext CSmMode
 
-Void Splat(CSmPlayer Player, Integer Duration) {
-    declare netwrite Integer Net_TMKart_InksplatDuration for Player;
-    declare netwrite Integer Net_TMKart_InksplatUpdate for Player = -1;
-    Net_TMKart_InksplatDuration = Duration;
+Void Splat(CSmPlayer _Player, Integer _Duration) {
+    declare netwrite Integer Net_TMKart_InksplatDuration for _Player = 3000;
+    declare netwrite Integer Net_TMKart_InksplatUpdate for _Player = -1;
+    Net_TMKart_InksplatDuration = _Duration;
     Net_TMKart_InksplatUpdate = Now;
 }
 
-Void Reset(CSmPlayer Player) {
-    declare netwrite Integer Net_TMKart_InksplatUpdate for Player = -1;
+Void Reset(CSmPlayer _Player) {
+    declare netwrite Integer Net_TMKart_InksplatUpdate for _Player = -1;
     Net_TMKart_InksplatUpdate = -1;
 }
 
@@ -19,33 +18,33 @@ Text GetManialink() {
     <manialink version="3">
     <frame id="Splatter">
     <!-- stack 1 -->
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
     <!-- stack 2 -->
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
     <!-- stack 3 -->
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
     <!-- stack 4 -->
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
-    <quad size="60 60" opacity="0" colorize="000" image="https://cdn.discordapp.com/attachments/934577399033647104/968986711398973491/unknown.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
+    <quad size="60 60" opacity="0" colorize="000" image="https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/ink_splats.png" halign="center" valign="center"/>
     </frame>
 
     <script><!--
