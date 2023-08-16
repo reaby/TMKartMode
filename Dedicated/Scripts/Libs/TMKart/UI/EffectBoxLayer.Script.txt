@@ -230,7 +230,9 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
 
                 if (Event.Type == CMlScriptEvent::Type::KeyPress && Event.KeyName == TMKart_KeyboardItemKey) {
                   	if (Net_PlayerAvilEffectMarker == "None") continue;
+					if (GUIPlayer != InputPlayer) continue;
                   	SendPlayerActivatedEffect();
+					SetActiveEffect("None");
                 }
             }
 
@@ -238,7 +240,9 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
                 if (PadEvent.Type == CInputEvent::EType::PadButtonPress) {
                     if ( TextLib::Replace(""^PadEvent.Button, "::EButton::", "") == TMKart_PadItemKey) {
                         if (Net_PlayerAvilEffectMarker == "None") continue;
-                        SendPlayerActivatedEffect();
+						if (GUIPlayer != InputPlayer) continue;
+						SendPlayerActivatedEffect();
+						SetActiveEffect("None");
                     }
                 }
             }
