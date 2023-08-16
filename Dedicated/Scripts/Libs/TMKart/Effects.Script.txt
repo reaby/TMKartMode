@@ -43,21 +43,10 @@
 declare K_BoxEffect[] G_EffectsList;
 declare K_BoxEffectOnPlayer[Text] G_EffectOnPlayer;
 declare K_BoxEffect[Text] G_PlayerEffect;
-declare Integer G_RoundStartTime;
 
 ///////////////
 // Functions //
 ///////////////
-
-Void OnRoundStart(){
-	UsePvPCollisions = False;
-	G_RoundStartTime = Now + 1500;
-}
-
-Void OnRoundEnd() {
-	UsePvPCollisions = False;
-	EventFeed::SendMessage("$d00Collisions Disabled");
-}
 
 K_BoxEffect GetEffectByIndex(Integer _Index) {
     if (G_EffectsList.existskey(_Index)) return G_EffectsList[_Index];
@@ -94,7 +83,6 @@ CSmPlayer GetFirstPlayer() {
 
 Void InitEffects() {
     // None effect
-	G_RoundStartTime = Now;
     declare K_BoxEffect NoneEffect = K_BoxEffect{
 		Name 	   = "None",
 		Marker     = "e_none",
@@ -289,9 +277,11 @@ Void ActivateOnPlayer(CSmPlayer _Player, K_BoxEffect _Effect) {
     // check if _Player _Effect are full, if so don't try to apply more...
     if (SetPlayer_DelayedIsFull(_Player)) return;
 	declare Text[] TMKart_ActiveEffects for _Player = [];
-	if (TMKart_ActiveEffects.exists("e_immunity")) {
+
+	if (_Effect.TargetMode != "self" && TMKart_ActiveEffects.exists("e_immunity")) {
 		return;
 	}
+
 	switch(_Effect.Marker) {
 		case "e_respawn": {
 			RespawnPlayer(_Player);
@@ -538,9 +528,4 @@ Void Yield() {
             UnActivateOnPlayer(EffectOnPlayer);
         }
     }
-
-	if (Now > (G_RoundStartTime + 5000) && !UsePvPCollisions) {
-		UsePvPCollisions = True;
-		EventFeed::SendMessage("$0d0Collisions Enabled");
-	}
 }

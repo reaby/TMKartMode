@@ -19,7 +19,7 @@
 ***Match_StartServer***
 ***
 UsePvECollisions = True;
-UsePvPCollisions = False;
+UsePvPCollisions = True;
 // ClientManiaAppUrl = "";
 
 Effects::InitEffects();
@@ -49,11 +49,6 @@ EventFeed::ClearMessages();
 
 ***Match_InitRound***
 ***
-Effects::OnRoundStart();
 Effects::CleanUp();
 ***
 
-***Match_EndRound***
-***
-Effects::OnRoundEnd();
-***
