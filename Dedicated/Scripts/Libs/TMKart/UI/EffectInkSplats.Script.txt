@@ -3,13 +3,17 @@
 Void Splat(CSmPlayer _Player, Integer _Duration) {
     declare netwrite Integer Net_TMKart_InksplatDuration for _Player = 3000;
     declare netwrite Integer Net_TMKart_InksplatUpdate for _Player = -1;
+	declare netwrite Boolean Net_TMKart_InkReset for _Player = False;
+	Net_TMKart_InkReset = False;
     Net_TMKart_InksplatDuration = _Duration;
     Net_TMKart_InksplatUpdate = Now;
 }
 
 Void Reset(CSmPlayer _Player) {
     declare netwrite Integer Net_TMKart_InksplatUpdate for _Player = -1;
-    Net_TMKart_InksplatUpdate = -1;
+    declare netwrite Boolean Net_TMKart_InkReset for _Player = False;
+	Net_TMKart_InkReset = True;
+	Net_TMKart_InksplatUpdate = Now;
 }
 
 Text GetManialink() {
@@ -80,10 +84,20 @@ Text GetManialink() {
         SplatSfx.Play();
     }
 
+	Void ResetSplats() {
+		declare CMlFrame Frame = Page.GetFirstChild("Splatter") as CMlFrame;
+		for(i, 0, 23) {
+			declare CMlQuad Quad = Frame.Controls[i] as CMlQuad;
+			AnimMgr.Flush(Quad);
+			Quad.Opacity = 0.0;
+		}
+	}
+
     main() {
         wait(GUIPlayer != Null);
         declare netread Integer Net_TMKart_InksplatDuration for GUIPlayer;
         declare netread Integer Net_TMKart_InksplatUpdate for GUIPlayer = -1;
+		declare netread Boolean Net_TMKart_InkReset for GUIPlayer = False;
         declare Integer LastUpdate = 0;
         SplatSfx = Audio.CreateSound("https://cdn.discordapp.com/attachments/934577399033647104/968984484735221780/ink_splash_sfx.ogg", 0., False, False, False);
         while(True) {
@@ -91,7 +105,11 @@ Text GetManialink() {
 
             if (Net_TMKart_InksplatUpdate > LastUpdate) {
                 LastUpdate = Net_TMKart_InksplatUpdate;
-                EnableSplat(Net_TMKart_InksplatDuration);
+                if (Net_TMKart_InkReset) {
+					ResetSplats();
+				} else {
+					EnableSplat(Net_TMKart_InksplatDuration);
+				}
             }
 
             foreach(index => EndTime in StackCounter) {

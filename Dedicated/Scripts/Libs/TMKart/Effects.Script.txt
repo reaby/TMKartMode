@@ -103,7 +103,7 @@ Void InitEffects() {
 		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/respawn.png",
 		Color      = "b23"
 	};
-    G_EffectsList.add(RespawnEffect);
+  //  G_EffectsList.add(RespawnEffect);
 
 	declare K_BoxEffect ImmunityEffect = K_BoxEffect {
 		Name       = "Immunity",
@@ -125,7 +125,7 @@ Void InitEffects() {
 		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/engine_off.png",
 		Color      = "ff0"
 	};
-	G_EffectsList.add(NoEngine);
+//	G_EffectsList.add(NoEngine);
 
     // CruiseControlAll
     declare K_BoxEffect ForceCruiseControlAll = K_BoxEffect {
@@ -136,7 +136,7 @@ Void InitEffects() {
 		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/cruisecontrol.png",
 		Color      = "0d0"
 		};
-		G_EffectsList.add(ForceCruiseControlAll);
+//		G_EffectsList.add(ForceCruiseControlAll);
 
     // Turbo
     declare K_BoxEffect Turbo = K_BoxEffect {
@@ -147,7 +147,7 @@ Void InitEffects() {
 		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/boost1.png",
 		Color      = "f90"
 	};
-	G_EffectsList.add(Turbo);
+//	G_EffectsList.add(Turbo);
 
     // Turbo2
     declare K_BoxEffect SuperTurbo = K_BoxEffect {
@@ -158,7 +158,7 @@ Void InitEffects() {
 		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/boost2.png",
 		Color      = "e22"
 	};
-	G_EffectsList.add(SuperTurbo);
+//	G_EffectsList.add(SuperTurbo);
 
     // Fragile
     declare K_BoxEffect Fragile = K_BoxEffect {
@@ -169,7 +169,7 @@ Void InitEffects() {
 		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/fragile.png",
 		Color      = "d70"
 	};
-	G_EffectsList.add(Fragile);
+//	G_EffectsList.add(Fragile);
 
     // NoBrake
     declare K_BoxEffect NoBrake = K_BoxEffect {
@@ -180,7 +180,7 @@ Void InitEffects() {
 		ImageURL   = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/nobrake.png",
 		Color      = "ef0"
 	};
-	G_EffectsList.add(NoBrake);
+//	G_EffectsList.add(NoBrake);
 
     // LowGravity
     declare K_BoxEffect LowGravity = K_BoxEffect {
@@ -191,7 +191,7 @@ Void InitEffects() {
 		ImageURL     = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/lowgravity.png",
 		Color        = "0af"
 	};
-	G_EffectsList.add(LowGravity);
+//	G_EffectsList.add(LowGravity);
 
     // SlowMo
     declare K_BoxEffect SlowMo = K_BoxEffect {
@@ -202,18 +202,18 @@ Void InitEffects() {
 		ImageURL     = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/slowmo.png",
 		Color        = "aaa"
 	};
-	G_EffectsList.add(SlowMo);
+//	G_EffectsList.add(SlowMo);
 
     // Yeet
     declare K_BoxEffect Yeet = K_BoxEffect {
 		Name           = "YEEET",
-		Marker         = "e_turbo2_self",
+		Marker         = "e_yeet",
 		TargetMode     = "nearest",
 		Duration       = 3000,
 		ImageURL       = "https://raw.githubusercontent.com/reaby/TMKartMode/master/Assets/yeet.png",
 		Color          = "900"
 	};
-	G_EffectsList.add(Yeet);
+//	G_EffectsList.add(Yeet);
 
     // Ink Splats
     declare K_BoxEffect InkSplats = K_BoxEffect {
@@ -235,7 +235,7 @@ Void InitEffects() {
 		Color          = "0dd",
 		Duration       = 5000
 	};
-	G_EffectsList.add(NoGrip);
+//	G_EffectsList.add(NoGrip);
 
     // No Steer
     declare K_BoxEffect NoSteer = K_BoxEffect {
@@ -246,7 +246,7 @@ Void InitEffects() {
 		Color          = "d0d",
 		Duration       = 1000
 	};
-	G_EffectsList.add(NoSteer);
+//	G_EffectsList.add(NoSteer);
 
     Layers::Create("MapName", MapNameLayer::GetManialink());
     Layers::SetType("MapName", CUILayer::EUILayerType::Normal);
@@ -289,11 +289,14 @@ Void UnActivateOnPlayer(K_BoxEffectOnPlayer _EffectOnPlayer) {
                 case "e_cruise_all": {
                     SetPlayer_Delayed_Cruise(Player, False, Player.Speed);
                 }
-                case "e_turbo_self": {
+				case "e_yeet": {
                     SetPlayer_Delayed_BoostUp(Player, False);
                 }
+                case "e_turbo_self": {
+                    SetPlayer_Delayed_BoostDown(Player, False);
+                }
                 case "e_turbo2_self": {
-                    SetPlayer_Delayed_Boost2Up(Player, False);
+                    SetPlayer_Delayed_Boost2Down(Player, False);
                 }
                 case "e_fragile": {
                     SetPlayer_Delayed_Fragile(Player, False);
@@ -354,6 +357,9 @@ Void ActivateOnPlayer(CSmPlayer _Player, K_BoxEffect _Effect) {
         case "e_turbo_self": {
             SetPlayer_Delayed_BoostDown(_Player, True); // was boostUp
         }
+		case "e_yeet": {
+            SetPlayer_Delayed_Boost2Up(_Player, True); // was boost2Up
+        }
         case "e_turbo2_self": {
             SetPlayer_Delayed_Boost2Down(_Player, True); // was boost2Up
         }
@@ -379,6 +385,7 @@ Void ActivateOnPlayer(CSmPlayer _Player, K_BoxEffect _Effect) {
             InkSplats::Splat(_Player, _Effect.Duration);
         }
 		case "e_immunity": {
+			InkSplats::Reset(_Player);
 			ClearEffectOnPlayer(_Player);
         }
     }
