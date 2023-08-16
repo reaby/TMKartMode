@@ -2,7 +2,7 @@
 #Include "Libs/Nadeo/TMxSM/Race/Race.Script.txt" as Race
 
 Void SyncLaps() {
-    declare netwrite Integer Net_RaceLapNb for Teams[0];
+    declare netwrite Integer Net_RaceLapNb for Teams[0] = -1;
     Net_RaceLapNb = Race::GetLapsNb();
     if (Net_RaceLapNb < 0) Net_RaceLapNb = 1;
 }

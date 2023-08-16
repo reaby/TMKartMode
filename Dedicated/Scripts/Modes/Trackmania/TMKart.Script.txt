@@ -1,9 +1,9 @@
 //#RequireContext CSmMode
 #Extends "Modes/TrackMania/TM_Rounds_Online.Script.txt"
 
-#Include "TextLib" as TextLib
-#Include "MathLib" as MathLib
-#Include "ColorLib" as ColorLib
+#Include "TextLib" as TL
+#Include "MathLib" as ML
+#Include "ColorLib" as CL
 
 #Include "Libs/TMKart/Effects.Script.txt" as Effects
 #Include "Libs/TMKart/UI/GameUI.Script.txt" as GameUI
@@ -19,8 +19,8 @@
 ***Match_StartServer***
 ***
 UsePvECollisions = True;
-UsePvPCollisions = True;
-ClientManiaAppUrl = "";
+UsePvPCollisions = False;
+// ClientManiaAppUrl = "";
 
 Effects::InitEffects();
 ***
@@ -49,7 +49,11 @@ EventFeed::ClearMessages();
 
 ***Match_InitRound***
 ***
+Effects::OnRoundStart();
 Effects::CleanUp();
 ***
 
-Void doNothing() { }
+***Match_EndRound***
+***
+Effects::OnRoundEnd();
+***

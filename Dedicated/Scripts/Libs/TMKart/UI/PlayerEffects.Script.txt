@@ -1,11 +1,11 @@
 // #RequireContext CSmMode
 
 
-Void SendEffectsUrls(Text Login, Text[] EffectUrls) {
-    declare CSmPlayer Player = GetPlayer(Login);
+Void SendEffectsUrls(Text _Login, Text[] _EffectUrls) {
+    declare CSmPlayer Player = GetPlayer(_Login);
     if (Player == Null) return;
-    declare netwrite Text[] Net_TMKart_PlayerEffects for Player;
-    Net_TMKart_PlayerEffects = EffectUrls;
+    declare netwrite Text[] Net_TMKart_PlayerEffects for Player = [];
+    Net_TMKart_PlayerEffects = _EffectUrls;
 }
 
 

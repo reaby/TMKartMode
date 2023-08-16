@@ -11,29 +11,29 @@
 
 declare K_FeedMessage[][Text] G_FeedMessages;
 
-K_FeedMessage[] GetPlayerMessage(CSmPlayer Player) {
-	if (!G_FeedMessages.existskey(Player.User.Login)) {
-		G_FeedMessages[Player.User.Login] = [];
+K_FeedMessage[] GetPlayerMessage(CSmPlayer _Player) {
+	if (!G_FeedMessages.existskey(_Player.User.Login)) {
+		G_FeedMessages[_Player.User.Login] = [];
 	}
-	return G_FeedMessages[Player.User.Login];
+	return G_FeedMessages[_Player.User.Login];
 }
 
-Void SetPlayerMessage(CSmPlayer Player, K_FeedMessage Message) {
-	if (Player == Null) return;
+Void SetPlayerMessage(CSmPlayer _Player, K_FeedMessage _Message) {
+	if (_Player == Null) return;
 
-	if (!G_FeedMessages.existskey(Player.User.Login)) {
-		G_FeedMessages[Player.User.Login] = [];
+	if (!G_FeedMessages.existskey(_Player.User.Login)) {
+		G_FeedMessages[_Player.User.Login] = [];
 	}
-	G_FeedMessages[Player.User.Login].addfirst(Message);
-	G_FeedMessages[Player.User.Login] = G_FeedMessages[Player.User.Login].slice(0, C_FeedMessageAmount);
+	G_FeedMessages[_Player.User.Login].addfirst(_Message);
+	G_FeedMessages[_Player.User.Login] = G_FeedMessages[_Player.User.Login].slice(0, C_FeedMessageAmount);
 }
 
 Void ClearMessages() {
 	G_FeedMessages.clear();
 	foreach(Player in AllPlayers) {
 		if (Player != Null) {
-			declare netwrite K_FeedMessage[] Net_EventFeed_Messages for Player;
-			declare netwrite Integer Net_EventFeed_Update for Player;
+			declare netwrite K_FeedMessage[] Net_EventFeed_Messages for Player = [];
+			declare netwrite Integer Net_EventFeed_Update for Player = 0;
 			Net_EventFeed_Messages = GetPlayerMessage(Player);
 			Net_EventFeed_Update = Now;
 		}
@@ -42,40 +42,40 @@ Void ClearMessages() {
 
 /**
 * Adds Message to event Feed
-* @param string:Text = main message, displayed in white without colorcodes, supports game colorcodes syntax
+* @param _String Text = main message, displayed in white without colorcodes, supports game colorcodes syntax
 */
-Void SendMessage(Text string, Text IconUrl, CSmPlayer CurrentPlayer) {
-	if (CurrentPlayer != Null) {
+Void SendMessage(Text _String, Text _IconUrl, CSmPlayer _CurrentPlayer) {
+	if (_CurrentPlayer != Null) {
 		declare Integer LikeNow = Now;
-		SetPlayerMessage(CurrentPlayer, K_FeedMessage{Message=string, IconURL=IconUrl, Stamp=LikeNow});
+		SetPlayerMessage(_CurrentPlayer, K_FeedMessage{Message=_String, IconURL=_IconUrl, Stamp=LikeNow});
 
-		declare netwrite K_FeedMessage[] Net_EventFeed_Messages for CurrentPlayer;
-		declare netwrite Integer Net_EventFeed_Update for CurrentPlayer;
+		declare netwrite K_FeedMessage[] Net_EventFeed_Messages for _CurrentPlayer = [];
+		declare netwrite Integer Net_EventFeed_Update for _CurrentPlayer = LikeNow;
 		Net_EventFeed_Update = LikeNow;
-		Net_EventFeed_Messages = GetPlayerMessage(CurrentPlayer);
+		Net_EventFeed_Messages = GetPlayerMessage(_CurrentPlayer);
 	}
 }
 
-Void SendMessageToAll(Text string, Text IconUrl) {
+Void SendMessageToAll(Text _String, Text _IconUrl) {
 	foreach(Player in AllPlayers) {
 		if (Player != Null) {
-			SendMessage(string, IconUrl, Player);
+			SendMessage(_String, _IconUrl, Player);
 		}
 	}
 }
 
-Void SendMessage(Text string, Text IconUrl) {
-	SendMessageToAll(string, IconUrl);
+Void SendMessage(Text _String, Text _IconUrl) {
+	SendMessageToAll(_String, _IconUrl);
 }
 
-Void SendMessage(Text string) {
-	SendMessageToAll(string, "");
+Void SendMessage(Text _String) {
+	SendMessageToAll(_String, "");
 }
 
-Text GetManialink(Integer feedSize) {
-	declare Text entries = "";
-	for (i, 0, feedSize) {
-		entries ^= """<frameinstance modelid="message"/> """;
+Text GetManialink(Integer _FeedSize) {
+	declare Text Entries = "";
+	for (idx, 0, _FeedSize) {
+		Entries ^= """<frameinstance modelid="message"/> """;
 	}
 
 	return """<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
@@ -85,12 +85,12 @@ Text GetManialink(Integer feedSize) {
 	<label size="60 4" pos="5 -1.5" text="" textsize="2" textfont="GameFontSemiBold" halign="left" valign="center2" opacity="0" textemboss="1" />
 	</framemodel>
 	<frame id="Events" pos="-158 10" >
-	{{{ entries }}}
+	{{{ Entries }}}
 	</frame>
 	<script><!--
 	#Include "MathLib" as ML
 
-	#Const size {{{ feedSize-1 }}}
+	#Const size {{{ _FeedSize-1 }}}
 
 	#Struct K_FeedMessage {
 		Text Message;

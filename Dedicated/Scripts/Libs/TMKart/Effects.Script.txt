@@ -1,7 +1,7 @@
 //#RequireContext CSmMode
 
-#Include "MathLib" as MathLib
-#Include "TextLib" as TextLib
+#Include "MathLib" as ML
+#Include "TextLib" as TL
 
 #Include "Libs/Nadeo/ModeLibs/Legacy/Layers2.Script.txt"    as Layers
 
@@ -43,38 +43,49 @@
 declare K_BoxEffect[] G_EffectsList;
 declare K_BoxEffectOnPlayer[Text] G_EffectOnPlayer;
 declare K_BoxEffect[Text] G_PlayerEffect;
+declare Integer G_RoundStartTime;
 
 ///////////////
 // Functions //
 ///////////////
 
-K_BoxEffect GetEffectByIndex(Integer Index) {
-    if (G_EffectsList.existskey(Index)) return G_EffectsList[Index];
+Void OnRoundStart(){
+	UsePvPCollisions = False;
+	G_RoundStartTime = Now + 1500;
+}
+
+Void OnRoundEnd() {
+	UsePvPCollisions = False;
+	EventFeed::SendMessage("$d00Collisions Disabled");
+}
+
+K_BoxEffect GetEffectByIndex(Integer _Index) {
+    if (G_EffectsList.existskey(_Index)) return G_EffectsList[_Index];
     return K_BoxEffect{};
 }
 
 K_BoxEffect GetRandomEffect() {
-    return GetEffectByIndex(MathLib::Rand(1, G_EffectsList.count - 1));
+    return GetEffectByIndex(ML::Rand(1, G_EffectsList.count - 1));
 }
 
-Integer GetPlayerPosition(Text Login) {
-    declare CSmPlayer Player = GetPlayer(Login);
+Integer GetPlayerPosition(Text _Login) {
+    declare CSmPlayer Player = GetPlayer(_Login);
     if (Player != Null) {
-        declare Text Dossard = TextLib::RegexReplace("^0", Player.Dossard, "", "");
-        return TextLib::ToInteger(Dossard);
+        declare Text Dossard = TL::RegexReplace("^0", Player.Dossard, "", "");
+        return TL::ToInteger(Dossard);
     }
     return -1;
 }
 
-Integer GetPlayerPosition(CSmPlayer Player) {
-    return GetPlayerPosition(Player.User.Login);
+Integer GetPlayerPosition(CSmPlayer _Player) {
+    return GetPlayerPosition(_Player.User.Login);
 }
 
 
 CSmPlayer GetFirstPlayer() {
     foreach (Player in Players) {
-        declare Text Dossard = TextLib::RegexReplace("^0", Player.Dossard, "", "");
-        if (TextLib::ToInteger(Dossard) == 1) {
+        declare Text Dossard = TL::RegexReplace("^0", Player.Dossard, "", "");
+        if (TL::ToInteger(Dossard) == 1) {
             return Player;
         }
     }
@@ -83,145 +94,169 @@ CSmPlayer GetFirstPlayer() {
 
 Void InitEffects() {
     // None effect
-    declare K_BoxEffect NoneEffect;
-    NoneEffect.Name       = "None";
-    NoneEffect.Marker     = "e_none";
-    NoneEffect.TargetMode = "none";
-    NoneEffect.Duration   = 0;
-    NoneEffect.ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968911908595961876/nothing.png";
-    NoneEffect.Color      = "fff";
+	G_RoundStartTime = Now;
+    declare K_BoxEffect NoneEffect = K_BoxEffect{
+		Name 	   = "None",
+		Marker     = "e_none",
+		TargetMode = "none",
+		Duration   = 0,
+		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968911908595961876/nothing.png",
+		Color      = "fff"
+	};
     G_EffectsList.add(NoneEffect);
 
-		declare K_BoxEffect RespawnEffect;
-    NoneEffect.Name       = "Respawn";
-    NoneEffect.Marker     = "e_respawn";
-    NoneEffect.TargetMode = "first";
-    NoneEffect.Duration   = 0;
-    NoneEffect.ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968911908595961876/nothing.png";
-    NoneEffect.Color      = "f00";
+	declare K_BoxEffect RespawnEffect = K_BoxEffect {
+		Name       = "Respawn",
+		Marker     = "e_respawn",
+		TargetMode = "first",
+		Duration   = 10,
+		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968911908595961876/nothing.png",
+		Color      = "b23"
+	};
     G_EffectsList.add(RespawnEffect);
 
+	declare K_BoxEffect ImmunityEffect = K_BoxEffect {
+		Name       = "Immunity",
+		Marker     = "e_immunity",
+		TargetMode = "self",
+		Duration   = 10000,
+		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968911908595961876/nothing.png",
+		Color      = "fff"
+	};
+    G_EffectsList.add(ImmunityEffect);
 
-    // Thunder // NoEngine
-    declare K_BoxEffect Thunder;
-    Thunder.Name       = "No Engine";
-    Thunder.Marker     = "e_thunder";
-    Thunder.Function   = "SetPlayer_Delayed_NoEngine";
-    Thunder.TargetMode = "nearest";
-    Thunder.Duration   = 5000;
-    Thunder.ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968907448045948938/thunder.png";
-    Thunder.Color      = "ff0";
-    G_EffectsList.add(Thunder);
+	// NoEngine
+    declare K_BoxEffect NoEngine = K_BoxEffect {
+		Name       = "No Engine",
+		Marker     = "e_no_engine",
+		Function   = "SetPlayer_Delayed_NoEngine",
+		TargetMode = "nearest",
+		Duration   = 5000,
+		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968907448045948938/thunder.png",
+		Color      = "ff0"
+	};
+	G_EffectsList.add(NoEngine);
 
     // CruiseControlAll
-    declare K_BoxEffect ForceCruiseControlAll;
-    ForceCruiseControlAll.Name       = "Force Cruise Control";
-    ForceCruiseControlAll.Marker     = "e_cruise_all";
-    ForceCruiseControlAll.TargetMode = "nearest";
-    ForceCruiseControlAll.Duration   = 3500;
-    ForceCruiseControlAll.ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968908512602255370/cruisecontrol.png";
-    ForceCruiseControlAll.Color      = "0d0";
-    G_EffectsList.add(ForceCruiseControlAll);
+    declare K_BoxEffect ForceCruiseControlAll = K_BoxEffect {
+		Name       = "Force Cruise Control",
+		Marker     = "e_cruise_all",
+		TargetMode = "nearest",
+		Duration   = 3500,
+		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968908512602255370/cruisecontrol.png",
+		Color      = "0d0"
+		};
+		G_EffectsList.add(ForceCruiseControlAll);
 
     // Turbo
-    declare K_BoxEffect Turbo;
-    Turbo.Name       = "Reactor Boost";
-    Turbo.Marker     = "e_turbo_self";
-    Turbo.TargetMode = "self";
-    Turbo.Duration   = 2500;
-    Turbo.ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968909707366506496/boost1.png";
-    Turbo.Color      = "f90";
-    G_EffectsList.add(Turbo);
+    declare K_BoxEffect Turbo = K_BoxEffect {
+		Name       = "Reactor Boost",
+		Marker     = "e_turbo_self",
+		TargetMode = "self",
+		Duration   = 2500,
+		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968909707366506496/boost1.png",
+		Color      = "f90"
+	};
+	G_EffectsList.add(Turbo);
 
     // Turbo2
-    declare K_BoxEffect SuperTurbo;
-    SuperTurbo.Name       = "Super Reactor Boost";
-    SuperTurbo.Marker     = "e_turbo2_self";
-    SuperTurbo.TargetMode = "self";
-    SuperTurbo.Duration   = 2500;
-    SuperTurbo.ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968909881287516210/boost2.png";
-    SuperTurbo.Color      = "e22";
-    G_EffectsList.add(SuperTurbo);
+    declare K_BoxEffect SuperTurbo = K_BoxEffect {
+		Name       = "Super Reactor Boost",
+		Marker     = "e_turbo2_self",
+		TargetMode = "self",
+		Duration   = 2500,
+		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968909881287516210/boost2.png",
+		Color      = "e22"
+	};
+	G_EffectsList.add(SuperTurbo);
 
     // Fragile
-    declare K_BoxEffect Fragile;
-    Fragile.Name       = "Fragile";
-    Fragile.Marker     = "e_fragile";
-    Fragile.TargetMode = "nearest";
-    Fragile.Duration   = 10000;
-    Fragile.ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968910304090148905/fragile.png";
-    Fragile.Color      = "d70";
-    G_EffectsList.add(Fragile);
+    declare K_BoxEffect Fragile = K_BoxEffect {
+		Name       = "Fragile",
+		Marker     = "e_fragile",
+		TargetMode = "nearest",
+		Duration   = 10000,
+		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968910304090148905/fragile.png",
+		Color      = "d70"
+	};
+	G_EffectsList.add(Fragile);
 
     // NoBrake
-    declare K_BoxEffect NoBrake;
-    NoBrake.Name       = "No Brakes";
-    NoBrake.Marker     = "e_nobrake";
-    NoBrake.TargetMode = "nearest";
-    NoBrake.Duration   = 5000;
-    NoBrake.ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968910570763984947/nobrake.png";
-    NoBrake.Color      = "ef0";
-    G_EffectsList.add(NoBrake);
+    declare K_BoxEffect NoBrake = K_BoxEffect {
+		Name       = "No Brakes",
+		Marker     = "e_nobrake",
+		TargetMode = "nearest",
+		Duration   = 5000,
+		ImageURL   = "https://cdn.discordapp.com/attachments/934577399033647104/968910570763984947/nobrake.png",
+		Color      = "ef0"
+	};
+	G_EffectsList.add(NoBrake);
 
     // LowGravity
-    declare K_BoxEffect LowGravity;
-    LowGravity.Name         = "Low Gravity";
-    LowGravity.Marker       = "e_low_gravity";
-    LowGravity.TargetMode   = "nearest";
-    LowGravity.Duration     = 5000;
-    LowGravity.ImageURL     = "https://cdn.discordapp.com/attachments/934577399033647104/968911201918668810/lowgravity.png";
-    LowGravity.Color        = "0af";
-    G_EffectsList.add(LowGravity);
+    declare K_BoxEffect LowGravity = K_BoxEffect {
+		Name         = "Low Gravity",
+		Marker       = "e_low_gravity",
+		TargetMode   = "nearest",
+		Duration     = 5000,
+		ImageURL     = "https://cdn.discordapp.com/attachments/934577399033647104/968911201918668810/lowgravity.png",
+		Color        = "0af"
+	};
+	G_EffectsList.add(LowGravity);
 
     // SlowMo
-    declare K_BoxEffect SlowMo;
-    SlowMo.Name         = "Slow Motion";
-    SlowMo.Marker       = "e_slowmo";
-    SlowMo.TargetMode   = "first";
-    SlowMo.Duration     = 5000;
-    SlowMo.ImageURL     = "https://cdn.discordapp.com/attachments/934577399033647104/968911442105479228/slowmo.png";
-    SlowMo.Color        = "aaa";
-    G_EffectsList.add(SlowMo);
+    declare K_BoxEffect SlowMo = K_BoxEffect {
+		Name         = "Slow Motion",
+		Marker       = "e_slowmo",
+		TargetMode   = "first",
+		Duration     = 5000,
+		ImageURL     = "https://cdn.discordapp.com/attachments/934577399033647104/968911442105479228/slowmo.png",
+		Color        = "aaa"
+	};
+	G_EffectsList.add(SlowMo);
 
     // Yeet
-    declare K_BoxEffect Yeet;
-    Yeet.Name           = "YEEET";
-    Yeet.Marker         = "e_turbo2_self";
-    Yeet.TargetMode     = "nearest";
-    Yeet.Duration       = 3000;
-    Yeet.ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/968911657126473728/yeet.png";
-    Yeet.Color          = "900";
-    G_EffectsList.add(Yeet);
+    declare K_BoxEffect Yeet = K_BoxEffect {
+		Name           = "YEEET",
+		Marker         = "e_turbo2_self",
+		TargetMode     = "nearest",
+		Duration       = 3000,
+		ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/968911657126473728/yeet.png",
+		Color          = "900"
+	};
+	G_EffectsList.add(Yeet);
 
     // Ink Splats
-    declare K_BoxEffect InkSplats;
-    InkSplats.Name           = "Ink Splats";
-    InkSplats.Marker         = "e_ink_splats";
-    InkSplats.TargetMode     = "all";
-    InkSplats.ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/968988325677522954/ink_icon.png";
-    InkSplats.Color          = "000";
-    InkSplats.Duration       = 5000;
-    G_EffectsList.add(InkSplats);
+    declare K_BoxEffect InkSplats = K_BoxEffect {
+		Name           = "Ink Splats",
+		Marker         = "e_ink_splats",
+		TargetMode     = "all",
+		ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/968988325677522954/ink_icon.png",
+		Color          = "000",
+		Duration       = 5000
+	};
+	G_EffectsList.add(InkSplats);
 
     // NoGrip
-    declare K_BoxEffect NoGrip;
-    NoGrip.Name           = "No Grip";
-    NoGrip.Marker         = "e_no_grip";
-    NoGrip.TargetMode     = "nearest";
-    NoGrip.ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/969386365156479006/nogrip.png";
-    NoGrip.Color          = "0dd";
-    NoGrip.Duration       = 5000;
-    G_EffectsList.add(NoGrip);
+    declare K_BoxEffect NoGrip = K_BoxEffect {
+		Name           = "No Grip",
+		Marker         = "e_no_grip",
+		TargetMode     = "nearest",
+		ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/969386365156479006/nogrip.png",
+		Color          = "0dd",
+		Duration       = 5000
+	};
+	G_EffectsList.add(NoGrip);
 
     // No Steer
-    declare K_BoxEffect NoSteer;
-    NoSteer.Name           = "No Steer";
-    NoSteer.Marker         = "e_no_steer";
-    NoSteer.TargetMode     = "nearest";
-    NoSteer.ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/969386365466837033/nosteer.png";
-    NoSteer.Color          = "d0d";
-    NoSteer.Duration       = 1000;
-    G_EffectsList.add(NoSteer);
+    declare K_BoxEffect NoSteer = K_BoxEffect {
+		Name           = "No Steer",
+		Marker         = "e_no_steer",
+		TargetMode     = "nearest",
+		ImageURL       = "https://cdn.discordapp.com/attachments/934577399033647104/969386365466837033/nosteer.png",
+		Color          = "d0d",
+		Duration       = 1000
+	};
+	G_EffectsList.add(NoSteer);
 
     Layers::Create("MapName", MapNameLayer::GetManialink());
     Layers::SetType("MapName", CUILayer::EUILayerType::Normal);
@@ -250,61 +285,69 @@ Void InitEffects() {
     EventFeed::ClearMessages();
 }
 
-Void ActivateOnPlayer(CSmPlayer Player, K_BoxEffect Effect) {
-    // check if player effect are full, if so don't try to apply more...
-    if (SetPlayer_DelayedIsFull(Player)) return;
-
-    switch(Effect.Marker) {
-        case "e_thunder": {
-            //SetPlayer_Delayed_NoEngine(Player, True);
-						RespawnPlayer(Player);
+Void ActivateOnPlayer(CSmPlayer _Player, K_BoxEffect _Effect) {
+    // check if _Player _Effect are full, if so don't try to apply more...
+    if (SetPlayer_DelayedIsFull(_Player)) return;
+	declare Text[] TMKart_ActiveEffects for _Player = [];
+	if (TMKart_ActiveEffects.exists("e_immunity")) {
+		return;
+	}
+	switch(_Effect.Marker) {
+		case "e_respawn": {
+			RespawnPlayer(_Player);
+		}
+        case "e_no_engine": {
+            SetPlayer_Delayed_NoEngine(_Player, True);
         }
         case "e_cruise_all": {
-            SetPlayer_Delayed_Cruise(Player, True, MathLib::Rand(20., 40.)*10.);
+            SetPlayer_Delayed_Cruise(_Player, True, ML::Rand(20., 40.)*10.);
         }
         case "e_turbo_self": {
-            SetPlayer_Delayed_BoostDown(Player, True); // was boostUp
+            SetPlayer_Delayed_BoostDown(_Player, True); // was boostUp
         }
         case "e_turbo2_self": {
-            SetPlayer_Delayed_Boost2Down(Player, True); // was boost2Up
+            SetPlayer_Delayed_Boost2Down(_Player, True); // was boost2Up
         }
         case "e_fragile": {
-            SetPlayer_Delayed_Fragile(Player, True);
+            SetPlayer_Delayed_Fragile(_Player, True);
         }
         case "e_nobrake": {
-            SetPlayer_Delayed_NoBrakes(Player, True);
+            SetPlayer_Delayed_NoBrakes(_Player, True);
         }
         case "e_low_gravity": {
-            SetPlayer_Delayed_GravityCoef(Player, 0.3);
+            SetPlayer_Delayed_GravityCoef(_Player, 0.3);
         }
         case "e_slowmo": {
-            SetPlayer_Delayed_SlowMotion(Player, True);
+            SetPlayer_Delayed_SlowMotion(_Player, True);
         }
         case "e_no_grip": {
-            SetPlayer_Delayed_AdherenceCoef(Player, 0.25);
+            SetPlayer_Delayed_AdherenceCoef(_Player, 0.25);
         }
         case "e_no_steer": {
-            SetPlayer_Delayed_NoSteer(Player, True);
+            SetPlayer_Delayed_NoSteer(_Player, True);
         }
         case "e_ink_splats": {
-            InkSplats::Splat(Player, Effect.Duration);
+            InkSplats::Splat(_Player, _Effect.Duration);
         }
     }
 
     declare K_BoxEffectOnPlayer EffectOnPlayer;
-    EffectOnPlayer.Effect = Effect;
+    EffectOnPlayer.Effect = _Effect;
     EffectOnPlayer.StartAt = Now;
-    EffectOnPlayer.EndAt = EffectOnPlayer.StartAt + Effect.Duration;
-    EffectOnPlayer.Login = Player.User.Login;
-    G_EffectOnPlayer[TextLib::ToText(EffectOnPlayer.StartAt)] = EffectOnPlayer;
-
+    EffectOnPlayer.EndAt = EffectOnPlayer.StartAt + _Effect.Duration;
+    EffectOnPlayer.Login = _Player.User.Login;
+    G_EffectOnPlayer[TL::ToText(EffectOnPlayer.StartAt)] = EffectOnPlayer;
+	TMKart_ActiveEffects.add(_Effect.Marker);
 }
 
-Void UnActivateOnPlayer(K_BoxEffectOnPlayer _effectOnPlayer) {
-    declare CSmPlayer Player = GetPlayer(_effectOnPlayer.Login);
+Void UnActivateOnPlayer(K_BoxEffectOnPlayer _EffectOnPlayer) {
+    declare CSmPlayer Player = GetPlayer(_EffectOnPlayer.Login);
+	declare Text[] TMKart_ActiveEffects for Player = [];
+	TMKart_ActiveEffects.remove(_EffectOnPlayer.Effect.Marker);
+
     if(Player != Null) {
         if (Player.RequestsSpectate == False) {
-            switch(_effectOnPlayer.Effect.Marker) {
+            switch(_EffectOnPlayer.Effect.Marker) {
                 case "e_thunder": {
                     SetPlayer_Delayed_NoEngine(Player, False);
                 }
@@ -337,22 +380,21 @@ Void UnActivateOnPlayer(K_BoxEffectOnPlayer _effectOnPlayer) {
                 {
                     SetPlayer_Delayed_NoSteer(Player, False);
                 }
-								case "e_respawn": {
-									RespawnPlayer(Player);
-								}
             }
-        }
+		}
     }
-    G_EffectOnPlayer.removekey(TextLib::ToText(_effectOnPlayer.StartAt));
+    G_EffectOnPlayer.removekey(TL::ToText(_EffectOnPlayer.StartAt));
 }
 
-Void ClearEffectOnPlayer(CSmPlayer Player) {
+Void ClearEffectOnPlayer(CSmPlayer _Player) {
     foreach(EffectOnPlayer in G_EffectOnPlayer) {
-        if(EffectOnPlayer.Login == Player.User.Login) {
+        if(EffectOnPlayer.Login == _Player.User.Login) {
             UnActivateOnPlayer(EffectOnPlayer);
         }
     }
-    SetPlayer_Delayed_Reset(Player);
+    SetPlayer_Delayed_Reset(_Player);
+	declare Text[] TMKart_ActiveEffects for _Player = [];
+	TMKart_ActiveEffects.clear();
 }
 
 Void CleanUp() {
@@ -362,29 +404,29 @@ Void CleanUp() {
     G_PlayerEffect.clear();
 }
 
-Void SyncPlayerAvilEffectWithUI(CSmPlayer _player) {
-    declare netwrite Text Net_PlayerAvilEffectMarker for _player;
-    declare K_BoxEffect PlayerAvilEffect = G_PlayerEffect[_player.User.Login];
+Void SyncPlayerAvilEffectWithUI(CSmPlayer _Player) {
+    declare netwrite Text Net_PlayerAvilEffectMarker for _Player = "";
+    declare K_BoxEffect PlayerAvilEffect = G_PlayerEffect[_Player.User.Login];
     Net_PlayerAvilEffectMarker = PlayerAvilEffect.Name;
 }
 
-Void SetPlayerAvilEffect(CSmPlayer _player, Integer _effectIndex) {
-    declare K_BoxEffect Effect = GetEffectByIndex(_effectIndex);
-    G_PlayerEffect[_player.User.Login] = Effect;
-    SyncPlayerAvilEffectWithUI(_player);
+Void SetPlayerAvilEffect(CSmPlayer _Player, Integer _EffectIndex) {
+    declare K_BoxEffect Effect = GetEffectByIndex(_EffectIndex);
+    G_PlayerEffect[_Player.User.Login] = Effect;
+    SyncPlayerAvilEffectWithUI(_Player);
 }
 
-Void GivePlayerRandomAvilEffect(CSmPlayer _player) {
-    G_PlayerEffect[_player.User.Login] = GetRandomEffect();
-    SyncPlayerAvilEffectWithUI(_player);
+Void GivePlayerRandomAvilEffect(CSmPlayer _Player) {
+    G_PlayerEffect[_Player.User.Login] = GetRandomEffect();
+    SyncPlayerAvilEffectWithUI(_Player);
 }
 
-CSmPlayer GetNearestPlayer(CSmPlayer _player) {
-    declare CSmPlayer NearestPlayer = _player;
+CSmPlayer GetNearestPlayer(CSmPlayer _Player) {
+    declare CSmPlayer NearestPlayer = _Player;
     declare Real NearestDistance = 100000.00;
     foreach (Player in Players) {
-        if (Player.User.Login != _player.User.Login) {
-            declare Real CurrentDistance = MathLib::Abs(MathLib::Distance(Player.Position, _player.Position));
+        if (Player.User.Login != _Player.User.Login) {
+            declare Real CurrentDistance = ML::Abs(ML::Distance(Player.Position, _Player.Position));
             if (CurrentDistance < NearestDistance) {
                 NearestDistance = CurrentDistance;
                 NearestPlayer = Player;
@@ -395,10 +437,10 @@ CSmPlayer GetNearestPlayer(CSmPlayer _player) {
     return NearestPlayer;
 }
 
-Void OnPlayerActivedEffect(CSmPlayer CurrentPlayer) {
-    if (!G_PlayerEffect.existskey(CurrentPlayer.User.Login)) return;
+Void OnPlayerActivedEffect(CSmPlayer _CurrentPlayer) {
+    if (!G_PlayerEffect.existskey(_CurrentPlayer.User.Login)) return;
 
-    declare K_BoxEffect AvilEffect = G_PlayerEffect[CurrentPlayer.User.Login];
+    declare K_BoxEffect AvilEffect = G_PlayerEffect[_CurrentPlayer.User.Login];
 
     if (AvilEffect.Name != "None") {
         switch(AvilEffect.TargetMode) {
@@ -412,28 +454,28 @@ Void OnPlayerActivedEffect(CSmPlayer CurrentPlayer) {
             }
 
             case "self": {
-                ActivateOnPlayer(CurrentPlayer, AvilEffect);
-                EventFeed::SendMessage("""$fff ${{{ AvilEffect.Color }}}{{{ AvilEffect.Name }}}$fff ➔ {{{CurrentPlayer.User.Name}}}""", AvilEffect.ImageURL);
-                SetPlayerAvilEffect(CurrentPlayer, 0);
+                ActivateOnPlayer(_CurrentPlayer, AvilEffect);
+                EventFeed::SendMessage("""${{{ AvilEffect.Color }}}{{{ AvilEffect.Name }}}$fff ➔ {{{_CurrentPlayer.User.Name}}}""", AvilEffect.ImageURL);
+                SetPlayerAvilEffect(_CurrentPlayer, 0);
             }
 
             case "nearest": {
-                declare CSmPlayer NearestPlayer = GetNearestPlayer(CurrentPlayer);
-								if (NearestPlayer != CurrentPlayer) {
-									ActivateOnPlayer(NearestPlayer, AvilEffect);
-									EventFeed::SendMessage("""$fff ${{{ AvilEffect.Color }}}{{{ AvilEffect.Name }}}$fff {{{CurrentPlayer.User.Name}}} ➔ {{{NearestPlayer.User.Name}}}""", AvilEffect.ImageURL);
-									SetPlayerAvilEffect(CurrentPlayer, 0);
-								}
+                declare CSmPlayer NearestPlayer = GetNearestPlayer(_CurrentPlayer);
+				if (NearestPlayer != _CurrentPlayer) {
+					ActivateOnPlayer(NearestPlayer, AvilEffect);
+					EventFeed::SendMessage("""${{{ AvilEffect.Color }}}{{{ AvilEffect.Name }}}$fff {{{_CurrentPlayer.User.Name}}} ➔ {{{NearestPlayer.User.Name}}}""", AvilEffect.ImageURL);
+					SetPlayerAvilEffect(_CurrentPlayer, 0);
+				}
             }
 
             case "all": {
                 foreach(Player in Players) {
-                    if (Player.User.Login != CurrentPlayer.User.Login) {
+                    if (Player.User.Login != _CurrentPlayer.User.Login) {
                         ActivateOnPlayer(Player, AvilEffect);
                     }
                 }
-                EventFeed::SendMessage("""$fff ${{{ AvilEffect.Color }}}{{{ AvilEffect.Name }}}$fff {{{CurrentPlayer.User.Name}}} ➔ Everyone""", AvilEffect.ImageURL);
-                SetPlayerAvilEffect(CurrentPlayer, 0);
+                EventFeed::SendMessage("""${{{ AvilEffect.Color }}}{{{ AvilEffect.Name }}}$fff {{{_CurrentPlayer.User.Name}}} ➔ Everyone""", AvilEffect.ImageURL);
+                SetPlayerAvilEffect(_CurrentPlayer, 0);
             }
         }
     }
@@ -453,13 +495,13 @@ Void Yield() {
     foreach (Event in PendingEvents) {
         if (Event.Type == CSmModeEvent::EType::OnPlayerTriggersWaypoint) {
             if (Event.Player != Null) {
-                declare K_BoxEffect effect = G_PlayerEffect[Event.Player.User.Login];
+                declare K_BoxEffect Effect = G_PlayerEffect[Event.Player.User.Login];
                 if (Event.IsNewLap) continue; // Don't assign finished player an effect
                 if (Event.IsFinish) {
                     SetPlayerAvilEffect(Event.Player, 0); // Remove the effect from the player
                     continue;
                 }
-                if (effect.Name != "None") continue;
+                if (Effect.Name != "None") continue;
                 GivePlayerRandomAvilEffect(Event.Player);   // Try to assign a random effect to the player
             }
         }
@@ -484,21 +526,21 @@ Void Yield() {
         }
     }
 
-    declare Text[][Text] Effects;
+    declare Text[][Text] EffectsUrls;
     foreach(EffectOnPlayer in G_EffectOnPlayer) {
-        if (!Effects.existskey(EffectOnPlayer.Login)) {
-            Effects[EffectOnPlayer.Login] = [];
+        if (!EffectsUrls.existskey(EffectOnPlayer.Login)) {
+            EffectsUrls[EffectOnPlayer.Login] = [];
         }
         if (Now < EffectOnPlayer.EndAt) {
-            Effects[EffectOnPlayer.Login].add(EffectOnPlayer.Effect.ImageURL);
+            EffectsUrls[EffectOnPlayer.Login].add(EffectOnPlayer.Effect.ImageURL);
             continue;
         } else {
             UnActivateOnPlayer(EffectOnPlayer);
         }
     }
 
-    foreach(Login => EffectURLs in Effects) {
-        PlayerEffects::SendEffectsUrls(Login, EffectURLs);
-    }
-
+	if (Now > (G_RoundStartTime + 5000) && !UsePvPCollisions) {
+		UsePvPCollisions = True;
+		EventFeed::SendMessage("$0d0Collisions Enabled");
+	}
 }

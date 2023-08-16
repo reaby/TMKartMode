@@ -13,11 +13,11 @@
     Text        Color;
 }
 
-Text Private_GenEffects(K_BoxEffect[] EffectList) {
+Text Private_GenEffects(K_BoxEffect[] _EffectList) {
     declare Text OutXml = "";
-    foreach (i => Effect in EffectList) {
+    foreach (idx => Effect in _EffectList) {
         declare Text Pos = "pos=\"0 24\"";
-        if (i == 0) Pos = "pos=\"0 0\"";
+        if (idx == 0) Pos = "pos=\"0 0\"";
         OutXml ^= """
         <frame id="{{{ Effect.Name }}}" {{{ Pos }}}>
         	<quad pos="0 1" size="19 19" opacity="1" image="{{{ Effect.ImageURL }}}" halign="center" valign="center"/>
@@ -28,8 +28,8 @@ Text Private_GenEffects(K_BoxEffect[] EffectList) {
     return OutXml;
 }
 
-Text GetManialink(K_BoxEffect[] EffectList) {
-    declare Text EffectsXml = Private_GenEffects(EffectList);
+Text GetManialink(K_BoxEffect[] _EffectList) {
+    declare Text EffectsXml = Private_GenEffects(_EffectList);
 
     return """<?xml version="1.0" encoding="utf-8" standalone="yes"?>
     <manialink version="3">
@@ -103,35 +103,35 @@ Text GetManialink(K_BoxEffect[] EffectList) {
 				kbLabel.Value = TMKart_KeyboardItemKey;
 				padLabel.Value = TMKart_PadItemKey;
 				while(loopActive) {
-            yield;
-						if (setPad) {
-							foreach (PadEvent in Input.PendingEvents) {
-									if (PadEvent.Type == CInputEvent::EType::PadButtonPress) {
-											setPad = False;
-											TMKart_PadItemKey = "" ^ TextLib::Replace(""^PadEvent.Button, "::EButton::", "");
-											padLabel.Value = TMKart_PadItemKey;
-									}
-							}
+           		yield;
+				if (setPad) {
+					foreach (PadEvent in Input.PendingEvents) {
+						if (PadEvent.Type == CInputEvent::EType::PadButtonPress) {
+							setPad = False;
+							TMKart_PadItemKey = "" ^ TextLib::Replace(""^PadEvent.Button, "::EButton::", "");
+							padLabel.Value = TMKart_PadItemKey;
 						}
+					}
+				}
             foreach (Event in PendingEvents) {
                 if (Event.Type == CMlScriptEvent::Type::MouseClick) {
                     switch (Event.ControlId) {
                         case "setKb": {
-													kbLabel.Value = "(press key to set)";
-													setKb = True;
-												}
-                        case "setPad": {
-													padLabel.Value = "(press button to set)";
-													setPad = True;
-												}
+									kbLabel.Value = "(press key to set)";
+									setKb = True;
+						}
+                	    case "setPad": {
+									padLabel.Value = "(press button to set)";
+									setPad = True;
+						}
                         case "resetKb": {
-													TMKart_KeyboardItemKey = "E";
-													kbLabel.Value = TMKart_KeyboardItemKey;
-												}
+									TMKart_KeyboardItemKey = "E";
+									kbLabel.Value = TMKart_KeyboardItemKey;
+						}
                         case "resetPad": {
-													TMKart_PadItemKey = "LeftStick";
-													padLabel.Value = TMKart_PadItemKey;
-												}
+										TMKart_PadItemKey = "LeftStick";
+										padLabel.Value = TMKart_PadItemKey;
+						}
                         case "save": {
                             UserMgr.MainUser.PersistentSave();
                             loopActive = False;
@@ -142,14 +142,14 @@ Text GetManialink(K_BoxEffect[] EffectList) {
                 if (Event.Type == CMlScriptEvent::Type::KeyPress && Event.KeyName == "Esc") {
                     setKb = False;
                     setPad = False;
-										kbLabel.Value = TMKart_KeyboardItemKey;
-										continue;
+					kbLabel.Value = TMKart_KeyboardItemKey;
+					continue;
                 }
 
                 if (setKb && Event.Type == CMlScriptEvent::Type::KeyPress) {
                     setKb=False;
                     TMKart_KeyboardItemKey = Event.KeyName;
-										kbLabel.Value = TMKart_KeyboardItemKey;
+					kbLabel.Value = TMKart_KeyboardItemKey;
                 }
             }
 
@@ -220,8 +220,6 @@ Text GetManialink(K_BoxEffect[] EffectList) {
                     CarouselActiveEffect(Net_PlayerAvilEffectMarker);
                 }
             }
-
-
 
             foreach (Event in PendingEvents) {
                 if (Event.Type == CMlScriptEvent::Type::MouseClick) {
