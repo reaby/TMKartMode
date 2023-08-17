@@ -1,5 +1,7 @@
 //#RequireContext CSmMode
 #Extends "Modes/TrackMania/TM_Rounds_Online.Script.txt"
+#Include "ManiaApps/Nadeo/TMxSM/Race/UIModules/TimeGap_Server.Script.txt" as UIModules_TimeGap
+#Include "ManiaApps/Nadeo/TMxSM/Race/UIModules/Chrono_Server.Script.txt" as UIModules_Chrono
 
 #Include "TextLib" as TL
 #Include "MathLib" as ML
@@ -21,9 +23,15 @@
 UsePvECollisions = True;
 UsePvPCollisions = True;
 // ClientManiaAppUrl = "";
-
 Effects::InitEffects();
 ***
+
+***Match_AfterLoadHud***
+***
+UIModules_TimeGap::Unload();
+UIModules_Chrono::Unload();
+***
+
 
 ***Match_PlayLoop***
 ***
@@ -51,4 +59,3 @@ EventFeed::ClearMessages();
 ***
 Effects::CleanUp();
 ***
-

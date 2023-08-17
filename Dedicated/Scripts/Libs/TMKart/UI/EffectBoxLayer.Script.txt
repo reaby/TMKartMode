@@ -232,7 +232,7 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
                   	if (Net_PlayerAvilEffectMarker == "None") continue;
 					if (GUIPlayer != InputPlayer) continue;
                   	SendPlayerActivatedEffect();
-					SetActiveEffect("None");
+					//SetActiveEffect("None");
                 }
             }
 
@@ -242,7 +242,7 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
                         if (Net_PlayerAvilEffectMarker == "None") continue;
 						if (GUIPlayer != InputPlayer) continue;
 						SendPlayerActivatedEffect();
-						SetActiveEffect("None");
+						//SetActiveEffect("None");
                     }
                 }
             }
