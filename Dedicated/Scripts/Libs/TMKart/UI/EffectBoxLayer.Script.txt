@@ -38,7 +38,7 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
     {{{ EffectsXml }}}
     </frame>
     <quad pos="0 0" z-index="0" size="25 25" style="Bgs1InRace" substyle="BgColorContour" opacity="0.7" halign="center" valign="center"/>
-    <label pos="-11 -13" z-index="0" size="22 5" textprefix="Use Item: " text="" textsize="1" id="infolabel"/>
+    <label pos="0 -13" z-index="0" size="50 5" textprefix="Use: " text="" textsize="2" id="infolabel" halign="center"/>
     <label pos="8 8" z-index="0" size="8 8" halign="center" valign="center2" text=""  scriptevents="1" id="Rebind" focusareacolor1="0000" focusareacolor2="04F"/>
     </frame>
 
