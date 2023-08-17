@@ -164,9 +164,9 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
     Void CarouselActiveEffect(Text Effect) {
         declare Text NewEffect = Effect;
         declare netread Text Net_PlayerAvilEffectMarker for GUIPlayer;
-        declare Integer Interval = 300;
+        declare Integer Interval = 350;
         declare Integer TotalInterval = 0;
-        declare Integer Steps = 25;
+        declare Integer Steps = 30;
         declare Integer Counter = 0;
         declare Integer StartTime = Now;
         declare CMlFrame Frame <=> (Page.GetFirstChild("Effects") as CMlFrame);
@@ -198,8 +198,8 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
     main()
     {
         wait(GUIPlayer != Null);
-        LastEffectName = "";
         declare netread Text Net_PlayerAvilEffectMarker for GUIPlayer;
+        LastEffectName = Net_PlayerAvilEffectMarker;
         declare persistent Text TMKart_KeyboardItemKey for UserMgr.MainUser = "E";
         declare persistent Text TMKart_PadItemKey for UserMgr.MainUser = "LeftStick";
         declare CMlLabel infoLabel <=> (Page.GetFirstChild("infolabel") as CMlLabel);
