@@ -13,17 +13,17 @@ Text GetManialink() {
     return """
     <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
     <manialink version="3">
-    <frame pos="-40 85">
-        <quad pos="0 0"    size="12 12" style="Bgs1InRace" substyle="BgColorContour" opacity="1"/>
-        <quad pos="13 0"   size="12 12" style="Bgs1InRace" substyle="BgColorContour" opacity="1"/>
-        <quad pos="0 -13"  size="12 12" style="Bgs1InRace" substyle="BgColorContour" opacity="1"/>
-        <quad pos="13 -13" size="12 12" style="Bgs1InRace" substyle="BgColorContour" opacity="1"/>
-        <frame id="Effects" z-index="-1">
-            <quad pos="0.5 -0.5"   size="11 11" hidden="1" />
-            <quad pos="13.5 -0.5"  size="11 11" hidden="1" />
-            <quad pos="0.5 -13.5"  size="11 11" hidden="1" />
-            <quad pos="13.5 -13.5" size="11 11" hidden="1" />
-        </frame>
+    <frame pos="-16 -67" scale="0.6">
+    <quad pos="0 0"  size="12 12" style="Bgs1InRace" substyle="BgColorContour" opacity="1"/>
+    <quad pos="13 0" size="12 12" style="Bgs1InRace" substyle="BgColorContour" opacity="1"/>
+    <quad pos="26 0"  size="12 12" style="Bgs1InRace" substyle="BgColorContour" opacity="1"/>
+    <quad pos="39 0" size="12 12" style="Bgs1InRace" substyle="BgColorContour" opacity="1"/>
+    <frame id="Effects" z-index="-1">
+    <quad pos="0.5 -0.5"   size="11 11" hidden="1" />
+    <quad pos="13.5 -0.5"  size="11 11" hidden="1" />
+    <quad pos="26.5 -0.5"  size="11 11" hidden="1" />
+    <quad pos="39.5 -0.5" size="11 11" hidden="1" />
+    </frame>
     </frame>
     <script><!--
 

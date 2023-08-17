@@ -90,7 +90,7 @@ Text GetManialink(Integer _FeedSize) {
 	<script><!--
 	#Include "MathLib" as ML
 
-	#Const size {{{ _FeedSize-1 }}}
+	#Const size {{{ _FeedSize }}}
 
 	#Struct K_FeedMessage {
 		Text Message;
@@ -105,7 +105,7 @@ Text GetManialink(Integer _FeedSize) {
 		declare CMlFrame frame = (Page.GetFirstChild("Events") as CMlFrame);
 		declare idx = counter%size;
 
-		for (i,0,size) {
+		for (i, 0, size) {
 			declare key = (idx + i) % size;
 			frame.Controls[key].RelativePosition_V3.Y = -i * 4.5;
 		}

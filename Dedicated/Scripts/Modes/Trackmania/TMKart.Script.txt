@@ -1,14 +1,11 @@
 //#RequireContext CSmMode
 #Extends "Modes/TrackMania/TM_Rounds_Online.Script.txt"
-#Include "ManiaApps/Nadeo/TMxSM/Race/UIModules/TimeGap_Server.Script.txt" as UIModules_TimeGap
-#Include "ManiaApps/Nadeo/TMxSM/Race/UIModules/Chrono_Server.Script.txt" as UIModules_Chrono
 
 #Include "TextLib" as TL
 #Include "MathLib" as ML
 #Include "ColorLib" as CL
 
 #Include "Libs/TMKart/Effects.Script.txt" as Effects
-#Include "Libs/TMKart/UI/GameUI.Script.txt" as GameUI
 #Include "Libs/TMKart/UI/EventFeed.Script.txt" as EventFeed
 
 #Setting S_TrustClientSimu True
@@ -26,13 +23,6 @@ UsePvPCollisions = True;
 Effects::InitEffects();
 ***
 
-***Match_AfterLoadHud***
-***
-UIModules_TimeGap::Unload();
-UIModules_Chrono::Unload();
-***
-
-
 ***Match_PlayLoop***
 ***
 Effects::Yield();
@@ -40,8 +30,8 @@ Effects::Yield();
 
 ***Match_InitMap***
 ***
+EventFeed::ClearMessages();
 Effects::CleanUp();
-GameUI::SyncLaps();
 ***
 
 ***Match_InitMatch***

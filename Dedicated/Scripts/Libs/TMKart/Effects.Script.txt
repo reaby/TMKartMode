@@ -5,7 +5,6 @@
 
 #Include "Libs/Nadeo/ModeLibs/Legacy/Layers2.Script.txt"    as Layers
 
-#Include "Libs/TMKart/UI/GameUI.Script.txt"                 as GameUI
 #Include "Libs/TMKart/UI/EffectInkSplats.Script.txt"        as InkSplats
 #Include "Libs/TMKart/UI/PlayerEffects.Script.txt"          as PlayerEffects
 #Include "Libs/TMKart/UI/EffectBoxLayer.Script.txt"         as EffectBoxLayer
@@ -367,15 +366,13 @@ Void InitEffects() {
 	Layers::SetType("PlayerEffects", CUILayer::EUILayerType::Normal);
 	Layers::Attach("PlayerEffects");
 
-	Layers::Create("GameUI", GameUI::GetManialink());
+	/*Layers::Create("GameUI", GameUI::GetManialink());
 	Layers::SetType("GameUI", CUILayer::EUILayerType::Normal);
-	Layers::Attach("GameUI");
+	Layers::Attach("GameUI"); */
 
 	Layers::Create("EventFeed", EventFeed::GetManialink(8));
 	Layers::SetType("EventFeed", CUILayer::EUILayerType::Normal);
 	Layers::Attach("EventFeed");
-
-	EventFeed::ClearMessages();
 }
 
 Void UnActivateOnPlayer(K_BoxEffectOnPlayer _EffectOnPlayer) {
@@ -515,6 +512,7 @@ Void CleanUp() {
 Void SyncPlayerAvilEffectWithUI(CSmPlayer _Player) {
 	declare netwrite Text Net_PlayerAvilEffectMarker for _Player = "";
 	declare K_BoxEffect PlayerAvilEffect = G_PlayerEffect[_Player.User.Login];
+	log(PlayerAvilEffect.Name);
 	Net_PlayerAvilEffectMarker = PlayerAvilEffect.Name;
 }
 
@@ -605,21 +603,18 @@ Void OnPlayerActivedEffect(CSmPlayer _CurrentPlayer) {
 * Processed on event loop
 */
 Void Yield() {
-	foreach (Player in Players) {
-		if(!G_PlayerEffect.existskey(Player.User.Login)) {
-			G_PlayerEffect[Player.User.Login] = GetEffectByIndex(0);
-			SyncPlayerAvilEffectWithUI(Player);
-		}
-	}
 
 	foreach (Event in PendingEvents) {
 		if (Event.Type == CSmModeEvent::EType::OnPlayerTriggersWaypoint) {
 			if (Event.Player != Null) {
+				if (!G_PlayerEffect.existskey(Event.Player.User.Login)) {
+					G_PlayerEffect[Event.Player.User.Login] = GetEffectByIndex(0);
+					SyncPlayerAvilEffectWithUI(Event.Player);
+				}
 				declare K_BoxEffect Effect = G_PlayerEffect[Event.Player.User.Login];
 				if (Event.IsNewLap) continue; // Don't assign finished player an effect
 				if (Event.IsFinish) {
 					SetPlayerAvilEffect(Event.Player, 0); // Remove the effect from the player
-					continue;
 				}
 				if (Effect.Name == "None") {
 					GivePlayerRandomAvilEffect(Event.Player);   // Try to assign a random effect to the player
@@ -628,6 +623,7 @@ Void Yield() {
 		}
 
 		if (Event.Type == CSmModeEvent::EType::OnPlayerRequestRespawn) {
+			EventFeed::SendMessage("Respawn");
 			SetPlayerAvilEffect(Event.Player, 0); // Remove the effect from the player
 			PlayerEffects::SendEffectsUrls(Event.Player.User.Login, []);
 			ClearEffectOnPlayer(Event.Player);

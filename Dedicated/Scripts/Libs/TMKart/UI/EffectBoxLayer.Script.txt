@@ -20,8 +20,8 @@ Text Private_GenEffects(K_BoxEffect[] _EffectList) {
         if (idx == 0) Pos = "pos=\"0 0\"";
         OutXml ^= """
         <frame id="{{{ Effect.Name }}}" {{{ Pos }}}>
-        	<quad pos="0 1" size="19 19" opacity="1" image="{{{ Effect.ImageURL }}}" halign="center" valign="center"/>
-        	<label pos="0 -9.5" size="20 4" text="{{{ Effect.Name }}}" textfont="GameFontRegular" textsize="2" halign="center" valign="center" />
+        <quad pos="0 1" size="19 19" opacity="1" image="{{{ Effect.ImageURL }}}" halign="center" valign="center"/>
+        <label pos="0 -9.5" size="20 4" text="{{{ Effect.Name }}}" textfont="GameFontRegular" textsize="2" halign="center" valign="center" />
         </frame>
         """;
     }
@@ -33,7 +33,7 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
 
     return """<?xml version="1.0" encoding="utf-8" standalone="yes"?>
     <manialink version="3">
-    <frame pos="0 72.5">
+    <frame pos="33 -74" scale="0.7">
     <frame id="Effects" z-index="-1" size="24 24" halign="center" valign="center">
     {{{ EffectsXml }}}
     </frame>
@@ -43,14 +43,14 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
     </frame>
 
     <frame id="dialog" pos="0 30" hidden="1">
-        <label id="bindKb" pos="-30 17" z-index="0" size="41 5" halign="left" valign="center" textprefix="Keyboard: "/>
-        <label id="bindPad" pos="-29 0" z-index="0" size="41 5" halign="left" valign="center" textprefix="Pad: "/>
-        <label id="setPad" pos="-12 -8" z-index="0" size="22 7" text="Set" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
-        <label id="setKb" pos="-12 8" z-index="0" size="22 7" text="Set" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
-        <label id="resetKb" pos="12 8" z-index="0" size="22 7" text="Reset" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
-        <label id="resetPad" pos="12 -8" z-index="0" size="22 7" text="Reset" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
-        <label id="save" pos="0 -22" z-index="0" size="37 7" text="Save" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
-        <quad pos="0 -4" z-index="-1" size="70 52" bgcolor="000" opacity="0.7" halign="center" valign="center"/>
+    <label id="bindKb" pos="-30 17" z-index="0" size="41 5" halign="left" valign="center" textprefix="Keyboard: "/>
+    <label id="bindPad" pos="-29 0" z-index="0" size="41 5" halign="left" valign="center" textprefix="Pad: "/>
+    <label id="setPad" pos="-12 -8" z-index="0" size="22 7" text="Set" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+    <label id="setKb" pos="-12 8" z-index="0" size="22 7" text="Set" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+    <label id="resetKb" pos="12 8" z-index="0" size="22 7" text="Reset" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+    <label id="resetPad" pos="12 -8" z-index="0" size="22 7" text="Reset" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+    <label id="save" pos="0 -22" z-index="0" size="37 7" text="Save" halign="center" valign="center" scriptevents="1" focusareacolor2="00DDFFFF" focusareacolor1="006C97FF"/>
+    <quad pos="0 -4" z-index="-1" size="70 52" bgcolor="000" opacity="0.7" halign="center" valign="center"/>
     </frame>
 
 
@@ -69,9 +69,10 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
         declare CMlFrame Frame <=> (Page.GetFirstChild("Effects") as CMlFrame);
         foreach (Elem in Frame.Controls) {
             AnimMgr.Flush(Elem);
-            Elem.RelativePosition_V3 = < 0., 24.>;
+            Elem.RelativeScale = 0.;
             if (Elem.ControlId == EffectName) {
-                AnimMgr.Add(Elem, "<elem pos=\"0 0\" />", 500, CAnimManager::EAnimManagerEasing::Linear);
+                Elem.RelativePosition_V3 = < 0., 0.>;
+                AnimMgr.Add(Elem, "<elem scale=\"1.\" />", 500, CAnimManager::EAnimManagerEasing::Linear);
             }
         }
     }
@@ -79,11 +80,12 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
     Void SetEffect(Integer Number, Integer Interval) {
         declare CMlFrame Frame <=> (Page.GetFirstChild("Effects") as CMlFrame);
         foreach (i => Elem in Frame.Controls) {
-            Elem.Show();
-            Elem.RelativePosition_V3 = <0., 24. >;
             if (i == Number) {
+                Elem.RelativePosition_V3 = <0., 0.>;
+                Elem.RelativeScale = 1.;
                 AnimMgr.Flush(Elem);
-                AnimMgr.Add(Elem, "<elem pos=\"0 -24\" />", Interval*3, CAnimManager::EAnimManagerEasing::CircOut);
+                // AnimMgr.Add(Elem, "<elem pos=\"0 -24\" />", Interval*3, CAnimManager::EAnimManagerEasing::CircOut);
+                AnimMgr.Add(Elem, "<elem scale=\"0\" />", MathLib::NearestInteger(Interval*1.5), CAnimManager::EAnimManagerEasing::ElasticInOut);
             }
         }
     }
@@ -100,38 +102,38 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
         declare persistent Text TMKart_PadItemKey for UserMgr.MainUser = "LeftStick";
         frame.Show();
         EnableMenuNavigationInputs = True;
-				kbLabel.Value = TMKart_KeyboardItemKey;
-				padLabel.Value = TMKart_PadItemKey;
-				while(loopActive) {
-           		yield;
-				if (setPad) {
-					foreach (PadEvent in Input.PendingEvents) {
-						if (PadEvent.Type == CInputEvent::EType::PadButtonPress) {
-							setPad = False;
-							TMKart_PadItemKey = "" ^ TextLib::Replace(""^PadEvent.Button, "::EButton::", "");
-							padLabel.Value = TMKart_PadItemKey;
-						}
-					}
-				}
+        kbLabel.Value = TMKart_KeyboardItemKey;
+        padLabel.Value = TMKart_PadItemKey;
+        while(loopActive) {
+            yield;
+            if (setPad) {
+                foreach (PadEvent in Input.PendingEvents) {
+                    if (PadEvent.Type == CInputEvent::EType::PadButtonPress) {
+                        setPad = False;
+                        TMKart_PadItemKey = "" ^ TextLib::Replace(""^PadEvent.Button, "::EButton::", "");
+                        padLabel.Value = TMKart_PadItemKey;
+                    }
+                }
+            }
             foreach (Event in PendingEvents) {
                 if (Event.Type == CMlScriptEvent::Type::MouseClick) {
                     switch (Event.ControlId) {
                         case "setKb": {
-									kbLabel.Value = "(press key to set)";
-									setKb = True;
-						}
-                	    case "setPad": {
-									padLabel.Value = "(press button to set)";
-									setPad = True;
-						}
+                            kbLabel.Value = "(press key to set)";
+                            setKb = True;
+                        }
+                        case "setPad": {
+                            padLabel.Value = "(press button to set)";
+                            setPad = True;
+                        }
                         case "resetKb": {
-									TMKart_KeyboardItemKey = "E";
-									kbLabel.Value = TMKart_KeyboardItemKey;
-						}
+                            TMKart_KeyboardItemKey = "E";
+                            kbLabel.Value = TMKart_KeyboardItemKey;
+                        }
                         case "resetPad": {
-										TMKart_PadItemKey = "LeftStick";
-										padLabel.Value = TMKart_PadItemKey;
-						}
+                            TMKart_PadItemKey = "LeftStick";
+                            padLabel.Value = TMKart_PadItemKey;
+                        }
                         case "save": {
                             UserMgr.MainUser.PersistentSave();
                             loopActive = False;
@@ -142,14 +144,14 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
                 if (Event.Type == CMlScriptEvent::Type::KeyPress && Event.KeyName == "Esc") {
                     setKb = False;
                     setPad = False;
-					kbLabel.Value = TMKart_KeyboardItemKey;
-					continue;
+                    kbLabel.Value = TMKart_KeyboardItemKey;
+                    continue;
                 }
 
                 if (setKb && Event.Type == CMlScriptEvent::Type::KeyPress) {
                     setKb=False;
                     TMKart_KeyboardItemKey = Event.KeyName;
-					kbLabel.Value = TMKart_KeyboardItemKey;
+                    kbLabel.Value = TMKart_KeyboardItemKey;
                 }
             }
 
@@ -161,26 +163,21 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
 
     Void CarouselActiveEffect(Text Effect) {
         declare Text NewEffect = Effect;
-        declare Text Net_PlayerAvilEffectMarker for GUIPlayer = "None";
-        declare Integer Interval = 200;
+        declare netread Text Net_PlayerAvilEffectMarker for GUIPlayer;
+        declare Integer Interval = 300;
         declare Integer TotalInterval = 0;
-        declare Integer Steps = 21;
+        declare Integer Steps = 25;
         declare Integer Counter = 0;
         declare Integer StartTime = Now;
         declare CMlFrame Frame <=> (Page.GetFirstChild("Effects") as CMlFrame);
+        Frame.Controls[0].RelativeScale = 0.;
         declare Integer PrevIndex = -1;
         G_Sfx.Play();
         while (True) {
             yield;
-
-            /*if (LastEffectName != Net_PlayerAvilEffectMarker) {
-                LastEffectName = Net_PlayerAvilEffectMarker;
-                NewEffect = Net_PlayerAvilEffectMarker;
-                SetActiveEffect(NewEffect);
+            if (LastEffectName != Net_PlayerAvilEffectMarker) {
                 break;
-            }*/
-
-
+            }
             if (Now >= StartTime + TotalInterval) {
                 Interval = Counter  * 15;
                 TotalInterval += Interval;
@@ -202,7 +199,7 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
     {
         wait(GUIPlayer != Null);
         LastEffectName = "";
-        declare netread Text Net_PlayerAvilEffectMarker for GUIPlayer = "None";
+        declare netread Text Net_PlayerAvilEffectMarker for GUIPlayer;
         declare persistent Text TMKart_KeyboardItemKey for UserMgr.MainUser = "E";
         declare persistent Text TMKart_PadItemKey for UserMgr.MainUser = "LeftStick";
         declare CMlLabel infoLabel <=> (Page.GetFirstChild("infolabel") as CMlLabel);
@@ -229,10 +226,10 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
                 }
 
                 if (Event.Type == CMlScriptEvent::Type::KeyPress && Event.KeyName == TMKart_KeyboardItemKey) {
-                  	if (Net_PlayerAvilEffectMarker == "None") continue;
-					if (GUIPlayer != InputPlayer) continue;
-                  	SendPlayerActivatedEffect();
-					//SetActiveEffect("None");
+                    if (Net_PlayerAvilEffectMarker == "None") continue;
+                    if (GUIPlayer != InputPlayer) continue;
+                    SendPlayerActivatedEffect();
+                    //SetActiveEffect("None");
                 }
             }
 
@@ -240,9 +237,9 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
                 if (PadEvent.Type == CInputEvent::EType::PadButtonPress) {
                     if ( TextLib::Replace(""^PadEvent.Button, "::EButton::", "") == TMKart_PadItemKey) {
                         if (Net_PlayerAvilEffectMarker == "None") continue;
-						if (GUIPlayer != InputPlayer) continue;
-						SendPlayerActivatedEffect();
-						//SetActiveEffect("None");
+                        if (GUIPlayer != InputPlayer) continue;
+                        SendPlayerActivatedEffect();
+                        //SetActiveEffect("None");
                     }
                 }
             }

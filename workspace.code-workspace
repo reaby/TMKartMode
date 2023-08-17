@@ -1,44 +1,45 @@
 {
-  "folders": [
-    {
-      "path": "."
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "Dedicated\\Scripts"
+        },
+        {
+            "path": "../Extract/GameData/Scripts"
+        },
+        {
+            "path": "../Extract/Titles/Trackmania/Scripts"
+        }
+    ],
+    "settings": {
+        "editor.tabSize": 4,
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": true,
+        "diffEditor.ignoreTrimWhitespace": true,
+        "editor.autoIndent": "full",
+        "files.trimTrailingWhitespace": true,
+        "files.encoding": "utf8",
+        "files.eol": "\n"
     },
-    {
-      "path": "Dedicated\\Scripts"
+    "extensions": {
+        "recommendations": [
+            "aessi.vscode-mslint",
+            "reaby.maniascript-support",
+            "redhat.vscode-xml"
+        ]
     },
-    {
-      "path": "../Extract/GameData/Scripts"
-    },
-    {
-      "path": "../Extract/Titles/Trackmania/Scripts"
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Launch Program",
+                "skipFiles": ["<node_internals>/**"],
+                "program": "${workspaceFolder}/Tools/restartmode.js"
+            }
+        ]
     }
-  ],
-  "settings": {
-    "editor.tabSize": 4,
-    "editor.detectIndentation": false,
-    "editor.insertSpaces": false,
-    "diffEditor.ignoreTrimWhitespace": false,
-    "files.trimTrailingWhitespace": true,
-    "files.encoding": "utf8",
-    "files.eol": "\n"
-  },
-  "extensions": {
-    "recommendations": [
-      "aessi.vscode-mslint",
-      "reaby.maniascript-support",
-      "redhat.vscode-xml"
-    ]
-  },
-  "launch": {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "type": "node",
-        "request": "launch",
-        "name": "Launch Program",
-        "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/Tools/restartmode.js"
-      }
-    ]
-  }
 }
