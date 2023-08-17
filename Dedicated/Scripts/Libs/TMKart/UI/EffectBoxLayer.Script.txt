@@ -58,7 +58,7 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
     #Include "TextLib" as TextLib
     #Include "MathLib" as MathLib
 
-    declare CAudioSource G_Sfx;
+   // declare CAudioSource G_Sfx;
     declare Text LastEffectName;
 
     Void SendPlayerActivatedEffect() {
@@ -172,7 +172,7 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
         declare CMlFrame Frame <=> (Page.GetFirstChild("Effects") as CMlFrame);
         Frame.Controls[0].RelativeScale = 0.;
         declare Integer PrevIndex = -1;
-        G_Sfx.Play();
+     //   G_Sfx.Play();
         while (True) {
             yield;
             if (LastEffectName != Net_PlayerAvilEffectMarker) {
@@ -203,7 +203,7 @@ Text GetManialink(K_BoxEffect[] _EffectList) {
         declare persistent Text TMKart_KeyboardItemKey for UserMgr.MainUser = "E";
         declare persistent Text TMKart_PadItemKey for UserMgr.MainUser = "LeftStick";
         declare CMlLabel infoLabel <=> (Page.GetFirstChild("infolabel") as CMlLabel);
-        G_Sfx = Audio.CreateSound("https://cdn.discordapp.com/attachments/934577399033647104/969235965719760936/roulette_sfx2.ogg");
+       // G_Sfx = Audio.CreateSound("https://cdn.discordapp.com/attachments/934577399033647104/969235965719760936/roulette_sfx2.ogg");
         while(True)
         {
             yield;

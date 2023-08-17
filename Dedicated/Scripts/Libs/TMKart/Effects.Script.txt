@@ -432,7 +432,7 @@ Void ClearEffectOnPlayer(CSmPlayer _Player) {
 	foreach(EffectOnPlayer in G_EffectOnPlayer) {
 		if(EffectOnPlayer.Login == _Player.User.Login) {
 			G_EffectOnPlayer.removekey(TL::ToText(EffectOnPlayer.StartAt));
-			//			UnActivateOnPlayer(EffectOnPlayer);
+			//  UnActivateOnPlayer(EffectOnPlayer);
 		}
 	}
 	SetPlayer_Delayed_Reset(_Player);
@@ -611,9 +611,10 @@ Void Yield() {
 					SyncPlayerAvilEffectWithUI(Event.Player);
 				}
 				declare K_BoxEffect Effect = G_PlayerEffect[Event.Player.User.Login];
-				if (Event.IsNewLap) continue; // Don't assign finished player an effect
+			//	if (Event.IsNewLap) continue; // Don't assign finished player an effect
 				if (Event.IsFinish) {
 					SetPlayerAvilEffect(Event.Player, 0); // Remove the effect from the player
+                    continue;
 				}
 				if (Effect.Name == "None") {
 					GivePlayerRandomAvilEffect(Event.Player);   // Try to assign a random effect to the player
