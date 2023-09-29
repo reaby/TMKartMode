@@ -3,7 +3,7 @@
 #Include "MathLib" as ML
 #Include "TextLib" as TL
 
-#Include "Libs/Nadeo/ModeLibs/Legacy/Layers2.Script.txt"    as Layers
+#Include "Libs/Nadeo/CMGame/Modes/Legacy/Layers2.Script.txt"    as Layers
 
 #Include "Libs/TMKart/UI/EffectInkSplats.Script.txt"        as InkSplats
 #Include "Libs/TMKart/UI/PlayerEffects.Script.txt"          as PlayerEffects
@@ -559,7 +559,7 @@ Void OnPlayerActivedEffect(CSmPlayer _CurrentPlayer) {
 
 			case "first": {
 				declare CSmPlayer Player = GetFirstPlayer();
-				if (Player == Null) {
+				if (Player == Null || Player == _CurrentPlayer) {
 					EventFeed::SendMessage("""Effect not send, you're first player!""", AvilEffect.ImageURL, _CurrentPlayer);
 				} else {
 					ActivateOnPlayer(Player, AvilEffect);
