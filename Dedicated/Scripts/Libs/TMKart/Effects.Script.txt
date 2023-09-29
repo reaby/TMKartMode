@@ -559,7 +559,7 @@ Void OnPlayerActivedEffect(CSmPlayer _CurrentPlayer) {
 
 			case "first": {
 				declare CSmPlayer Player = GetFirstPlayer();
-				if (Player == Null) {
+				if (Player == Null || Player == _CurrentPlayer) {
 					EventFeed::SendMessage("""Effect not send, you're first player!""", AvilEffect.ImageURL, _CurrentPlayer);
 				} else {
 					ActivateOnPlayer(Player, AvilEffect);
